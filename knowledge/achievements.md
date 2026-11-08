@@ -7,7 +7,7 @@
 
 ## Academic record
 - B.Tech CSE, SRIT Jabalpur, 2023–2027.
-- Latest reported CGPA: 7.7/10.
+- Latest reported CGPA: 8.06/10.
 - Class XII: 84.6%, MP Board, 2023.
 - Class X: 83.2%, 2021.
 

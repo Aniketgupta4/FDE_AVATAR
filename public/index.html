@@ -8,10 +8,8 @@
 
     <title>Aniket Kumar Gupta | Personal AI Assistant</title>
 
-    <!-- LiveKit SDK -->
     <script src="https://cdn.jsdelivr.net/npm/livekit-client/dist/livekit-client.umd.min.js"></script>
 
-    <!-- Google Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -19,13 +17,11 @@
     <style>
         :root {
             --bg: #080808;
-            --surface: #111111;
-            --surface-hover: #1b1b1b;
+            --surface: #111;
             --border: rgba(255,255,255,.10);
-            --text: #ffffff;
-            --muted: #999999;
+            --text: #fff;
+            --muted: #999;
             --green: #22c55e;
-            --red: #ef4444;
         }
 
         * {
@@ -50,10 +46,8 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: rgba(8,8,8,.95);
             border-bottom: 1px solid var(--border);
-            position: relative;
-            z-index: 10;
+            background: #090909;
         }
 
         .brand {
@@ -62,7 +56,6 @@
             gap: 13px;
             font-size: 16px;
             font-weight: 700;
-            letter-spacing: -.4px;
         }
 
         .logo {
@@ -71,9 +64,8 @@
             display: grid;
             place-items: center;
             border-radius: 12px;
-            background: #fff;
-            color: #080808;
-            font-size: 14px;
+            background: white;
+            color: black;
             font-weight: 800;
         }
 
@@ -81,7 +73,6 @@
             display: block;
             color: #777;
             font-size: 10px;
-            font-weight: 500;
             margin-top: 4px;
             letter-spacing: .8px;
         }
@@ -96,7 +87,6 @@
             background: #111;
             color: #aaa;
             font-size: 12px;
-            font-weight: 600;
         }
 
         .connection-dot {
@@ -139,13 +129,12 @@
             font-size: 10px;
             font-weight: 600;
             letter-spacing: 1px;
-            text-transform: uppercase;
         }
 
         .eyebrow-dot {
             width: 7px;
             height: 7px;
-            background: #fff;
+            background: white;
             border-radius: 50%;
         }
 
@@ -181,12 +170,10 @@
             background: #101010;
             border: 1px solid rgba(255,255,255,.14);
             box-shadow: 0 25px 75px rgba(0,0,0,.55);
-            transition: border-color .3s, box-shadow .3s;
         }
 
         .avatar-card.is-active {
-            border-color: rgba(255,255,255,.24);
-            box-shadow: 0 25px 90px rgba(0,0,0,.7);
+            border-color: rgba(255,255,255,.25);
         }
 
         #avatarVideo {
@@ -195,8 +182,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background:
-                radial-gradient(circle at center, #202020, #101010 65%, #080808);
+            background: radial-gradient(circle at center, #202020, #101010 65%, #080808);
         }
 
         #avatarVideo video {
@@ -208,7 +194,7 @@
             background: #080808;
         }
 
-        /* AVATAR PLACEHOLDER */
+        /* PLACEHOLDER */
 
         .avatar-placeholder {
             text-align: center;
@@ -224,7 +210,6 @@
             background: linear-gradient(145deg,#292929,#151515);
             display: grid;
             place-items: center;
-            box-shadow: 0 10px 35px rgba(0,0,0,.3);
         }
 
         .avatar-placeholder .icon::after {
@@ -237,7 +222,6 @@
         .avatar-placeholder strong {
             display: block;
             font-size: 20px;
-            font-weight: 700;
             margin-bottom: 9px;
         }
 
@@ -274,7 +258,7 @@
             background: white;
         }
 
-        /* CONTROLS */
+        /* BUTTONS */
 
         .controls {
             display: flex;
@@ -305,10 +289,6 @@
             transform: translateY(-2px);
         }
 
-        button:active:not(:disabled) {
-            transform: translateY(0);
-        }
-
         button:disabled {
             opacity: .35;
             cursor: not-allowed;
@@ -316,13 +296,11 @@
 
         .primary {
             color: #080808;
-            background: #fff;
-            box-shadow: 0 5px 20px rgba(255,255,255,.08);
+            background: white;
         }
 
         .primary:hover:not(:disabled) {
             background: #e5e5e5;
-            box-shadow: 0 8px 25px rgba(255,255,255,.12);
         }
 
         .secondary {
@@ -333,7 +311,6 @@
 
         .secondary:hover:not(:disabled) {
             background: #252525;
-            border-color: rgba(255,255,255,.25);
         }
 
         .danger {
@@ -349,8 +326,6 @@
         .button-icon {
             font-size: 16px;
         }
-
-        /* SUPPORTING TEXT */
 
         .info-line {
             margin-top: 19px;
@@ -397,7 +372,7 @@
             font-weight: 600;
         }
 
-        /* REMOTE AUDIO */
+        /* HIDDEN AUDIO */
 
         #audioTracks {
             position: absolute;
@@ -411,7 +386,6 @@
         /* TABLET */
 
         @media (max-width: 768px) {
-
             main {
                 padding-top: 45px;
             }
@@ -424,10 +398,6 @@
                 border-radius: 16px;
             }
 
-            .controls {
-                gap: 10px;
-            }
-
             button {
                 padding: 0 17px;
             }
@@ -436,9 +406,8 @@
         /* MOBILE */
 
         @media (max-width: 520px) {
-
             header {
-                height: 68px;
+                min-height: 68px;
                 padding: 0 14px;
             }
 
@@ -450,7 +419,6 @@
             .logo {
                 width: 36px;
                 height: 36px;
-                border-radius: 10px;
             }
 
             .brand small {
@@ -507,10 +475,6 @@
                 margin-bottom: 15px;
             }
 
-            .avatar-placeholder .icon::after {
-                font-size: 20px;
-            }
-
             .avatar-placeholder strong {
                 font-size: 16px;
             }
@@ -550,14 +514,6 @@
                 font-size: 11px;
             }
         }
-
-        @media (prefers-reduced-motion: reduce) {
-            *,
-            *::before,
-            *::after {
-                transition-duration: .01ms !important;
-            }
-        }
     </style>
 </head>
 
@@ -584,8 +540,6 @@
 
 <main>
 
-    <!-- HERO SECTION -->
-
     <section class="hero">
 
         <div class="eyebrow">
@@ -608,7 +562,7 @@
     </section>
 
 
-    <!-- AVATAR SECTION -->
+    <!-- AVATAR -->
 
     <section class="avatar-card" id="avatarCard">
 
@@ -622,19 +576,14 @@
 
                 <div class="icon"></div>
 
-                <strong>
-                    Aniket's AI Assistant
-                </strong>
+                <strong>Aniket's AI Assistant</strong>
 
-                <span>
-                    Ask me anything about Aniket
-                </span>
+                <span>Ask me anything about Aniket</span>
 
             </div>
 
         </div>
 
-        <!-- Remote avatar audio -->
         <div id="audioTracks"></div>
 
     </section>
@@ -655,7 +604,6 @@
         </button>
 
 
-
         <button id="endButton" class="danger" disabled>
             <span class="button-icon">■</span>
             End Session
@@ -663,15 +611,12 @@
 
     </section>
 
-
     <div class="info-line">
         Your private space to discover Aniket's journey, skills and achievements.
     </div>
 
 </main>
 
-
-<!-- FOOTER -->
 
 <footer>
 
@@ -723,6 +668,8 @@
 
     let pendingAudioTracks = [];
 
+    let isEndingSession = false;
+
 
     /*
      * ================================================================
@@ -767,13 +714,14 @@
      * ================================================================
      */
 
-    startButton.addEventListener(
-        "click",
-        startSession
-    );
+    startButton.addEventListener("click", startSession);
 
 
     async function startSession() {
+
+        if (room || isEndingSession) {
+            return;
+        }
 
         try {
 
@@ -782,52 +730,48 @@
             setStatus("Creating session...");
 
             const roomName =
-                "avatar-" +
-                crypto.randomUUID();
+                "avatar-" + crypto.randomUUID();
 
 
-            const response =
-                await fetch(
-                    "/api/livekit/token",
-                    {
-                        method: "POST",
+            const response = await fetch(
+                "/api/livekit/token",
+                {
+                    method: "POST",
 
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
 
-                        body: JSON.stringify({
-                            roomName: roomName
-                        })
-                    }
-                );
+                    body: JSON.stringify({
+                        roomName: roomName
+                    })
+                }
+            );
 
 
             if (!response.ok) {
-
                 throw new Error(
                     "Could not generate LiveKit token"
                 );
-
             }
 
 
-            const credentials =
-                await response.json();
+            const credentials = await response.json();
 
 
-            room = new Room({
+            const newRoom = new Room({
                 adaptiveStream: false
             });
 
+            room = newRoom;
 
-            registerRoomEvents();
+            registerRoomEvents(newRoom);
 
 
             setStatus("Connecting to LiveKit...");
 
 
-            await room.connect(
+            await newRoom.connect(
                 credentials.serverUrl,
                 credentials.token,
                 {
@@ -836,13 +780,24 @@
             );
 
 
+            // Ignore stale connection if session was ended
+            if (room !== newRoom) {
+                return;
+            }
+
+
             setConnected(true);
 
             setStatus("Waiting for AI assistant...");
 
 
-            await room.localParticipant
+            await newRoom.localParticipant
                 .setMicrophoneEnabled(true);
+
+
+            if (room !== newRoom) {
+                return;
+            }
 
 
             microphoneEnabled = true;
@@ -850,7 +805,7 @@
 
             try {
 
-                await room.startAudio();
+                await newRoom.startAudio();
 
             } catch (error) {
 
@@ -868,17 +823,30 @@
 
         } catch (error) {
 
-            console.error(
-                "START SESSION ERROR:",
-                error
-            );
+            console.error("START SESSION ERROR:", error);
 
+
+            // Clean up a partially created room
+            if (room) {
+
+                const failedRoom = room;
+                room = null;
+
+                try {
+                    await failedRoom.disconnect(true);
+                } catch (disconnectError) {
+                    console.error(
+                        "Connection cleanup error:",
+                        disconnectError
+                    );
+                }
+
+            }
+
+
+            resetUI();
 
             setStatus("Connection failed");
-
-            setConnected(false);
-
-            startButton.disabled = false;
 
         }
 
@@ -891,10 +859,10 @@
      * ================================================================
      */
 
-    function registerRoomEvents() {
+    function registerRoomEvents(currentRoom) {
 
 
-        room.on(
+        currentRoom.on(
             RoomEvent.ParticipantConnected,
             participant => {
 
@@ -903,21 +871,27 @@
                     participant.identity
                 );
 
-                setStatus(
-                    "AI assistant connecting..."
-                );
+                setStatus("AI assistant connecting...");
 
             }
         );
 
 
-        room.on(
+        /*
+         * REMOTE TRACK RECEIVED
+         */
+
+        currentRoom.on(
             RoomEvent.TrackSubscribed,
             (
                 track,
                 publication,
                 participant
             ) => {
+
+                if (room !== currentRoom || isEndingSession) {
+                    return;
+                }
 
                 console.log(
                     "REMOTE TRACK:",
@@ -929,13 +903,9 @@
                 );
 
 
-                /*
-                 * AVATAR VIDEO
-                 */
+                // AVATAR VIDEO
 
-                if (
-                    track.kind === Track.Kind.Video
-                ) {
+                if (track.kind === Track.Kind.Video) {
 
                     console.log(
                         "AVATAR VIDEO RECEIVED FROM:",
@@ -947,6 +917,7 @@
                         participant.identity;
 
 
+                    // Remove previous avatar elements
                     avatarVideo.innerHTML = "";
 
 
@@ -982,17 +953,11 @@
                 }
 
 
-                /*
-                 * AVATAR AUDIO
-                 */
+                // AVATAR AUDIO
 
-                if (
-                    track.kind === Track.Kind.Audio
-                ) {
+                if (track.kind === Track.Kind.Audio) {
 
-                    if (
-                        avatarParticipantIdentity !== null
-                    ) {
+                    if (avatarParticipantIdentity !== null) {
 
                         if (
                             participant.identity ===
@@ -1027,7 +992,7 @@
          * TRACK REMOVED
          */
 
-        room.on(
+        currentRoom.on(
             RoomEvent.TrackUnsubscribed,
             (
                 track,
@@ -1041,11 +1006,9 @@
                     track.kind
                 );
 
-
-                track.detach()
-                    .forEach(element => {
-                        element.remove();
-                    });
+                track.detach().forEach(element => {
+                    element.remove();
+                });
 
             }
         );
@@ -1055,7 +1018,7 @@
          * PARTICIPANT LEFT
          */
 
-        room.on(
+        currentRoom.on(
             RoomEvent.ParticipantDisconnected,
             participant => {
 
@@ -1086,16 +1049,15 @@
          * ACTIVE SPEAKERS
          */
 
-        room.on(
+        currentRoom.on(
             RoomEvent.ActiveSpeakersChanged,
             speakers => {
 
                 if (
+                    room !== currentRoom ||
                     avatarParticipantIdentity === null
                 ) {
-
                     return;
-
                 }
 
 
@@ -1113,7 +1075,7 @@
                         "AI Assistant is speaking..."
                     );
 
-                } else if (room) {
+                } else {
 
                     setStatus(
                         microphoneEnabled
@@ -1131,19 +1093,16 @@
          * AUDIO PLAYBACK
          */
 
-        room.on(
+        currentRoom.on(
             RoomEvent.AudioPlaybackStatusChanged,
             () => {
 
-                if (!room.canPlaybackAudio) {
-
-                    audioButton.hidden = false;
-
-                } else {
-
-                    audioButton.hidden = true;
-
+                if (room !== currentRoom) {
+                    return;
                 }
+
+                audioButton.hidden =
+                    currentRoom.canPlaybackAudio;
 
             }
         );
@@ -1153,19 +1112,29 @@
          * RECONNECTING
          */
 
-        room.on(
+        currentRoom.on(
             RoomEvent.Reconnecting,
             () => {
 
-                setStatus("Reconnecting...");
+                if (room === currentRoom) {
+                    setStatus("Reconnecting...");
+                }
 
             }
         );
 
 
-        room.on(
+        /*
+         * RECONNECTED
+         */
+
+        currentRoom.on(
             RoomEvent.Reconnected,
             () => {
+
+                if (room !== currentRoom) {
+                    return;
+                }
 
                 setStatus(
                     avatarParticipantIdentity
@@ -1181,13 +1150,19 @@
          * DISCONNECTED
          */
 
-        room.on(
+        currentRoom.on(
             RoomEvent.Disconnected,
             () => {
 
                 console.log("ROOM DISCONNECTED");
 
-                resetUI();
+                if (room === currentRoom) {
+
+                    room = null;
+
+                    resetUI();
+
+                }
 
             }
         );
@@ -1216,18 +1191,12 @@
 
     function attachPendingAvatarAudio() {
 
-        if (
-            avatarParticipantIdentity === null
-        ) {
-
+        if (avatarParticipantIdentity === null) {
             return;
-
         }
 
 
-        for (
-            const pending of pendingAudioTracks
-        ) {
+        for (const pending of pendingAudioTracks) {
 
             if (
                 pending.participantIdentity ===
@@ -1256,31 +1225,49 @@
         "click",
         async () => {
 
-            if (!room) {
+            const currentRoom = room;
+
+            if (!currentRoom || isEndingSession) {
                 return;
             }
 
 
-            microphoneEnabled = !microphoneEnabled;
+            try {
+
+                const nextState = !microphoneEnabled;
+
+                await currentRoom.localParticipant
+                    .setMicrophoneEnabled(nextState);
 
 
-            await room.localParticipant
-                .setMicrophoneEnabled(
+                if (room !== currentRoom) {
+                    return;
+                }
+
+
+                microphoneEnabled = nextState;
+
+
+                micButton.innerHTML =
                     microphoneEnabled
+                        ? '<span class="button-icon">🎙</span> Mute Microphone'
+                        : '<span class="button-icon">🔇</span> Unmute Microphone';
+
+
+                setStatus(
+                    microphoneEnabled
+                        ? "Listening..."
+                        : "Microphone muted"
                 );
 
+            } catch (error) {
 
-            micButton.innerHTML =
-                microphoneEnabled
-                    ? '<span class="button-icon">🎙</span> Mute Microphone'
-                    : '<span class="button-icon">🔇</span> Unmute Microphone';
+                console.error(
+                    "MICROPHONE ERROR:",
+                    error
+                );
 
-
-            setStatus(
-                microphoneEnabled
-                    ? "Listening..."
-                    : "Microphone muted"
-            );
+            }
 
         }
     );
@@ -1296,16 +1283,20 @@
         "click",
         async () => {
 
-            if (!room) {
+            const currentRoom = room;
+
+            if (!currentRoom || isEndingSession) {
                 return;
             }
 
 
             try {
 
-                await room.startAudio();
+                await currentRoom.startAudio();
 
-                audioButton.hidden = true;
+                if (room === currentRoom) {
+                    audioButton.hidden = true;
+                }
 
             } catch (error) {
 
@@ -1322,38 +1313,139 @@
 
     /*
      * ================================================================
-     * END SESSION
+     * END SESSION - FIXED
      * ================================================================
      */
 
     endButton.addEventListener(
         "click",
-        async () => {
+        endSession
+    );
 
-            if (room) {
 
-                try {
+    async function endSession() {
 
-                    await room.disconnect();
+        // Prevent multiple clicks
+        if (isEndingSession) {
+            return;
+        }
 
-                } catch (error) {
+        isEndingSession = true;
 
-                    console.error(
-                        "Disconnect error:",
-                        error
-                    );
+        const currentRoom = room;
 
-                }
+
+        // Update button immediately
+        endButton.disabled = true;
+
+        startButton.disabled = true;
+
+        micButton.disabled = true;
+
+        audioButton.hidden = true;
+
+
+        setStatus("Ending session...");
+
+
+        try {
+
+            console.log("ENDING LIVEKIT SESSION...");
+
+
+            if (currentRoom) {
+
+                /*
+                 * Detach all subscribed remote tracks
+                 */
+
+                currentRoom.remoteParticipants.forEach(
+                    participant => {
+
+                        participant.trackPublications.forEach(
+                            publication => {
+
+                                if (publication.track) {
+
+                                    publication.track
+                                        .detach()
+                                        .forEach(element => {
+                                            element.remove();
+                                        });
+
+                                }
+
+                            }
+                        );
+
+                    }
+                );
+
+
+                /*
+                 * Remove pending audio references
+                 */
+
+                pendingAudioTracks.forEach(
+                    pending => {
+
+                        pending.track.detach()
+                            .forEach(element => {
+                                element.remove();
+                            });
+
+                    }
+                );
+
+
+                /*
+                 * Clear global room reference before
+                 * disconnect to avoid duplicate event cleanup
+                 */
 
                 room = null;
+
+
+                /*
+                 * Disconnect and stop local media tracks
+                 */
+
+                await currentRoom.disconnect(true);
+
+
+                console.log(
+                    "LIVEKIT DISCONNECTED SUCCESSFULLY"
+                );
 
             }
 
 
+        } catch (error) {
+
+            console.error(
+                "SESSION DISCONNECT ERROR:",
+                error
+            );
+
+        } finally {
+
+            /*
+             * Always restore UI, even if disconnect fails
+             */
+
+            room = null;
+
             resetUI();
 
+            isEndingSession = false;
+
+            console.log(
+                "SESSION CLEANUP COMPLETED"
+            );
+
         }
-    );
+
+    }
 
 
     /*
@@ -1388,6 +1480,12 @@
     }
 
 
+    /*
+     * ================================================================
+     * RESET UI
+     * ================================================================
+     */
+
     function resetUI() {
 
         setConnected(false);
@@ -1399,6 +1497,10 @@
 
         pendingAudioTracks = [];
 
+
+        /*
+         * Restore original avatar placeholder
+         */
 
         avatarVideo.innerHTML = `
 
@@ -1422,8 +1524,16 @@
         avatarCard.classList.remove("is-active");
 
 
+        /*
+         * Remove remote audio elements
+         */
+
         audioTracks.innerHTML = "";
 
+
+        /*
+         * Reset microphone state
+         */
 
         microphoneEnabled = true;
 
@@ -1431,6 +1541,10 @@
         micButton.innerHTML =
             '<span class="button-icon">🎙</span> Mute Microphone';
 
+
+        /*
+         * Restore button states
+         */
 
         startButton.disabled = false;
 
