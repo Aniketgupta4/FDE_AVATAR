@@ -1,459 +1,582 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1.0">
+    <title>Aniket Kumar Gupta | Personal AI Assistant</title>
 
-    <title>Aniket's AI Assistant</title>
+    <!-- LiveKit SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/livekit-client/dist/livekit-client.umd.min.js"></script>
 
-
-    <!-- LiveKit Browser SDK -->
-    <script
-            src="https://cdn.jsdelivr.net/npm/livekit-client/dist/livekit-client.umd.min.js">
-    </script>
-
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
+        :root {
+            --bg: #080808;
+            --surface: #111111;
+            --surface-hover: #1b1b1b;
+            --border: rgba(255,255,255,.10);
+            --text: #ffffff;
+            --muted: #999999;
+            --green: #22c55e;
+            --red: #ef4444;
+        }
 
         * {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
         }
 
         body {
-            margin: 0;
-
             min-height: 100vh;
-
-            font-family:
-                    Inter,
-                    -apple-system,
-                    BlinkMacSystemFont,
-                    "Segoe UI",
-                    sans-serif;
-
-            background: #090b0f;
-            color: #f4f4f5;
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
         }
 
-
-        /* ---------------- HEADER ---------------- */
+        /* HEADER */
 
         header {
-            height: 72px;
-
-            padding: 0 40px;
-
+            min-height: 76px;
+            padding: 0 clamp(18px, 5vw, 75px);
             display: flex;
             align-items: center;
             justify-content: space-between;
-
-            border-bottom:
-                    1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(8,8,8,.95);
+            border-bottom: 1px solid var(--border);
+            position: relative;
+            z-index: 10;
         }
 
         .brand {
             display: flex;
             align-items: center;
-            gap: 12px;
-
-            font-size: 18px;
+            gap: 13px;
+            font-size: 16px;
             font-weight: 700;
+            letter-spacing: -.4px;
         }
 
         .logo {
-            width: 38px;
-            height: 38px;
-
+            width: 42px;
+            height: 42px;
             display: grid;
             place-items: center;
-
-            border-radius: 10px;
-
-            background: white;
-            color: #111;
-
+            border-radius: 12px;
+            background: #fff;
+            color: #080808;
+            font-size: 14px;
             font-weight: 800;
+        }
+
+        .brand small {
+            display: block;
+            color: #777;
+            font-size: 10px;
+            font-weight: 500;
+            margin-top: 4px;
+            letter-spacing: .8px;
         }
 
         .connection {
             display: flex;
             align-items: center;
-            gap: 8px;
-
-            font-size: 14px;
-            color: #a1a1aa;
+            gap: 9px;
+            padding: 9px 14px;
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            background: #111;
+            color: #aaa;
+            font-size: 12px;
+            font-weight: 600;
         }
 
         .connection-dot {
             width: 8px;
             height: 8px;
-
             border-radius: 50%;
-
-            background: #71717a;
+            background: #666;
         }
 
         .connection-dot.connected {
-            background: #22c55e;
+            background: var(--green);
+            box-shadow: 0 0 10px rgba(34,197,94,.5);
         }
 
-
-        /* ---------------- PAGE ---------------- */
+        /* MAIN */
 
         main {
-            width: min(1100px, 92%);
-
-            margin: 38px auto 60px;
+            width: min(1160px, calc(100% - 40px));
+            margin: auto;
+            padding: 58px 0 55px;
         }
 
-
-        /* ---------------- HERO ---------------- */
+        /* HERO */
 
         .hero {
             text-align: center;
+            margin-bottom: 36px;
+        }
 
-            margin-bottom: 28px;
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            margin-bottom: 19px;
+            border: 1px solid rgba(255,255,255,.15);
+            border-radius: 30px;
+            background: #111;
+            color: #ccc;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .eyebrow-dot {
+            width: 7px;
+            height: 7px;
+            background: #fff;
+            border-radius: 50%;
         }
 
         .hero h1 {
-            margin: 0;
+            font-size: clamp(32px, 5vw, 50px);
+            font-weight: 800;
+            letter-spacing: -2px;
+            line-height: 1.2;
+        }
 
-            font-size: clamp(
-                    30px,
-                    5vw,
-                    46px
-            );
-
-            letter-spacing: -1.5px;
+        .hero h1 span {
+            color: #888;
         }
 
         .hero p {
-            margin: 12px 0 0;
-
-            color: #a1a1aa;
-
-            font-size: 15px;
+            max-width: 650px;
+            margin: 15px auto 0;
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.9;
         }
 
-
-        /* ---------------- AVATAR ---------------- */
+        /* AVATAR */
 
         .avatar-card {
             position: relative;
-
-            width: min(900px, 94vw);
-
+            width: 100%;
+            max-width: 1080px;
             aspect-ratio: 16 / 9;
-
             margin: auto;
-
             overflow: hidden;
-
             border-radius: 20px;
+            background: #101010;
+            border: 1px solid rgba(255,255,255,.14);
+            box-shadow: 0 25px 75px rgba(0,0,0,.55);
+            transition: border-color .3s, box-shadow .3s;
+        }
 
-            background: #08090c;
-
-            border:
-                    1px solid rgba(255, 255, 255, 0.12);
-
-            box-shadow:
-                    0 24px 70px rgba(0, 0, 0, 0.30);
+        .avatar-card.is-active {
+            border-color: rgba(255,255,255,.24);
+            box-shadow: 0 25px 90px rgba(0,0,0,.7);
         }
 
         #avatarVideo {
             width: 100%;
             height: 100%;
-
             display: flex;
             align-items: center;
             justify-content: center;
-
-            background: #08090c;
+            background:
+                radial-gradient(circle at center, #202020, #101010 65%, #080808);
         }
 
-        /*
-         * IMPORTANT:
-         *
-         * contain = show full Synthesia frame.
-         * cover = crop head/body to fill container.
-         */
         #avatarVideo video {
             display: block;
-
             width: 100%;
             height: 100%;
-
             object-fit: contain;
             object-position: center;
-
-            background: #08090c;
+            background: #080808;
         }
 
-
-        /* ---------------- PLACEHOLDER ---------------- */
+        /* AVATAR PLACEHOLDER */
 
         .avatar-placeholder {
             text-align: center;
-
-            color: #71717a;
+            padding: 20px;
         }
 
         .avatar-placeholder .icon {
-            width: 52px;
-            height: 52px;
+            width: 78px;
+            height: 78px;
+            margin: 0 auto 22px;
+            border-radius: 22px;
+            border: 1px solid rgba(255,255,255,.2);
+            background: linear-gradient(145deg,#292929,#151515);
+            display: grid;
+            place-items: center;
+            box-shadow: 0 10px 35px rgba(0,0,0,.3);
+        }
 
-            margin: 0 auto 18px;
-
-            border-radius: 50%;
-
-            border: 4px solid #71717a;
-
-            background: #27272a;
+        .avatar-placeholder .icon::after {
+            content: "AG";
+            color: white;
+            font-size: 23px;
+            font-weight: 800;
         }
 
         .avatar-placeholder strong {
             display: block;
-
-            margin-bottom: 7px;
-
-            color: #e4e4e7;
-
-            font-size: 18px;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 9px;
         }
 
         .avatar-placeholder span {
-            color: #71717a;
+            color: #999;
+            font-size: 13px;
         }
 
-
-        /* ---------------- STATUS ---------------- */
+        /* STATUS */
 
         .status-pill {
             position: absolute;
-
-            z-index: 10;
-
-            top: 16px;
-            left: 16px;
-
-            padding: 9px 14px;
-
-            border-radius: 100px;
-
-            font-size: 13px;
-
-            background:
-                    rgba(9, 9, 11, 0.78);
-
-            backdrop-filter:
-                    blur(10px);
-
-            border:
-                    1px solid rgba(255, 255, 255, 0.13);
+            z-index: 5;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 10px 15px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+            color: white;
+            background: rgba(10,10,10,.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,.15);
         }
 
+        .status-pill::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: white;
+        }
 
-        /* ---------------- CONTROLS ---------------- */
+        /* CONTROLS */
 
         .controls {
             display: flex;
+            align-items: center;
             justify-content: center;
-            gap: 12px;
-
-            margin-top: 22px;
-
             flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 27px;
         }
 
         button {
-            border: 0;
-
-            padding: 12px 20px;
-
-            border-radius: 10px;
-
-            font-size: 14px;
+            min-height: 49px;
+            padding: 0 23px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            border-radius: 11px;
+            font-family: inherit;
+            font-size: 13px;
             font-weight: 600;
-
             cursor: pointer;
-
-            transition: 0.2s;
+            transition: all .2s ease;
+            border: 1px solid transparent;
         }
 
         button:hover:not(:disabled) {
-            transform: translateY(-1px);
+            transform: translateY(-2px);
+        }
+
+        button:active:not(:disabled) {
+            transform: translateY(0);
         }
 
         button:disabled {
+            opacity: .35;
             cursor: not-allowed;
-
-            opacity: 0.4;
         }
 
         .primary {
-            background: white;
-            color: #111;
+            color: #080808;
+            background: #fff;
+            box-shadow: 0 5px 20px rgba(255,255,255,.08);
+        }
+
+        .primary:hover:not(:disabled) {
+            background: #e5e5e5;
+            box-shadow: 0 8px 25px rgba(255,255,255,.12);
         }
 
         .secondary {
-            color: white;
+            color: #eee;
+            background: #151515;
+            border-color: rgba(255,255,255,.12);
+        }
 
-            background: #1c1c20;
-
-            border:
-                    1px solid rgba(255, 255, 255, 0.1);
+        .secondary:hover:not(:disabled) {
+            background: #252525;
+            border-color: rgba(255,255,255,.25);
         }
 
         .danger {
             color: #fca5a5;
-
-            background: #2a1719;
-
-            border:
-                    1px solid rgba(239, 68, 68, 0.25);
+            background: rgba(239,68,68,.08);
+            border-color: rgba(239,68,68,.22);
         }
 
-
-        /* ---------------- ARCHITECTURE ---------------- */
-
-        .architecture {
-            margin-top: 48px;
-
-            padding-top: 28px;
-
-            border-top:
-                    1px solid rgba(255, 255, 255, 0.08);
+        .danger:hover:not(:disabled) {
+            background: rgba(239,68,68,.16);
         }
 
-        .architecture-title {
-            margin-bottom: 22px;
+        .button-icon {
+            font-size: 16px;
+        }
 
+        /* SUPPORTING TEXT */
+
+        .info-line {
+            margin-top: 19px;
             text-align: center;
-
+            color: #777;
             font-size: 12px;
-
-            text-transform: uppercase;
-
-            letter-spacing: 1.3px;
-
-            color: #71717a;
+            line-height: 1.7;
         }
 
-        .pipeline {
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        /* FOOTER */
 
-            flex-wrap: wrap;
-
-            gap: 9px;
-        }
-
-        .node {
-            padding: 10px 13px;
-
-            border-radius: 9px;
-
-            background: #15161a;
-
-            border:
-                    1px solid rgba(255, 255, 255, 0.08);
-
-            color: #d4d4d8;
-
-            font-size: 12px;
-        }
-
-        .arrow {
-            color: #52525b;
-        }
-
-        .hint {
-            margin-top: 22px;
-
+        footer {
+            padding: 29px 20px;
             text-align: center;
-
-            color: #71717a;
-
-            font-size: 13px;
+            border-top: 1px solid var(--border);
+            background: #090909;
         }
 
+        .footer-title {
+            color: #eee;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 9px;
+        }
 
-        /*
-         * Don't use display:none here.
-         *
-         * Keep remote audio elements alive,
-         * just move them outside the visible UI.
-         */
+        .footer-description {
+            max-width: 650px;
+            margin: auto;
+            color: #777;
+            font-size: 12px;
+            line-height: 1.9;
+        }
+
+        .footer-bottom {
+            margin-top: 19px;
+            padding-top: 17px;
+            border-top: 1px solid rgba(255,255,255,.06);
+            color: #666;
+            font-size: 11px;
+        }
+
+        .footer-bottom span {
+            color: #ddd;
+            font-weight: 600;
+        }
+
+        /* REMOTE AUDIO */
+
         #audioTracks {
             position: absolute;
-
             width: 1px;
             height: 1px;
-
             overflow: hidden;
-
             opacity: 0;
-
             pointer-events: none;
         }
 
+        /* TABLET */
 
-        @media(max-width: 650px) {
+        @media (max-width: 768px) {
+
+            main {
+                padding-top: 45px;
+            }
+
+            .hero h1 {
+                letter-spacing: -1.2px;
+            }
+
+            .avatar-card {
+                border-radius: 16px;
+            }
+
+            .controls {
+                gap: 10px;
+            }
+
+            button {
+                padding: 0 17px;
+            }
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 520px) {
 
             header {
-                padding: 0 18px;
+                height: 68px;
+                padding: 0 14px;
+            }
+
+            .brand {
+                gap: 9px;
+                font-size: 12px;
+            }
+
+            .logo {
+                width: 36px;
+                height: 36px;
+                border-radius: 10px;
+            }
+
+            .brand small {
+                font-size: 8px;
+            }
+
+            .connection {
+                padding: 8px 10px;
+                font-size: 10px;
+                gap: 7px;
             }
 
             main {
-                margin-top: 24px;
+                width: calc(100% - 26px);
+                padding-top: 40px;
+                padding-bottom: 40px;
             }
 
-            .arrow {
-                display: none;
+            .hero {
+                margin-bottom: 25px;
             }
 
+            .hero h1 {
+                font-size: 32px;
+                letter-spacing: -1.3px;
+            }
+
+            .hero p {
+                font-size: 12px;
+                max-width: 340px;
+            }
+
+            .eyebrow {
+                font-size: 9px;
+                margin-bottom: 15px;
+            }
+
+            .avatar-card {
+                aspect-ratio: 4 / 3;
+                border-radius: 14px;
+            }
+
+            .status-pill {
+                top: 10px;
+                left: 10px;
+                padding: 8px 11px;
+                font-size: 10px;
+            }
+
+            .avatar-placeholder .icon {
+                width: 62px;
+                height: 62px;
+                border-radius: 18px;
+                margin-bottom: 15px;
+            }
+
+            .avatar-placeholder .icon::after {
+                font-size: 20px;
+            }
+
+            .avatar-placeholder strong {
+                font-size: 16px;
+            }
+
+            .avatar-placeholder span {
+                font-size: 11px;
+            }
+
+            .controls {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+                margin-top: 20px;
+            }
+
+            .controls button {
+                width: 100%;
+                min-height: 46px;
+                padding: 0 7px;
+                font-size: 11px;
+                border-radius: 10px;
+            }
+
+            .controls .primary {
+                grid-column: 1 / -1;
+            }
+
+            .info-line {
+                font-size: 11px;
+            }
+
+            footer {
+                padding: 25px 15px;
+            }
+
+            .footer-description {
+                font-size: 11px;
+            }
         }
 
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                transition-duration: .01ms !important;
+            }
+        }
     </style>
-
 </head>
 
-
 <body>
-
 
 <header>
 
     <div class="brand">
-
-        <div class="logo">
-            AA
-        </div>
+        <div class="logo">AA</div>
 
         <div>
             Aniket's AI Assistant
+            <small>PERSONAL AI EXPERIENCE</small>
         </div>
-
     </div>
 
-
     <div class="connection">
-
-        <div
-                id="connectionDot"
-                class="connection-dot">
-        </div>
-
-        <span id="connectionText">
-            Disconnected
-        </span>
-
+        <div id="connectionDot" class="connection-dot"></div>
+        <span id="connectionText">Disconnected</span>
     </div>
 
 </header>
@@ -461,32 +584,37 @@
 
 <main>
 
+    <!-- HERO SECTION -->
 
     <section class="hero">
 
+        <div class="eyebrow">
+            <span class="eyebrow-dot"></span>
+            PERSONAL AI ASSISTANT
+        </div>
+
         <h1>
-            Aniket's AI Assistant
+            Get to Know <span>Aniket</span>
         </h1>
 
         <p>
-            Ask anything about Java, Spring, DevOps,
-            System Design or Generative AI
+            An AI-powered personal assistant that knows
+            Aniket's background, education, skills, projects,
+            achievements and professional journey.
+            Ask anything about Aniket and get instant,
+            personalized answers.
         </p>
 
     </section>
 
 
-    <section class="avatar-card">
+    <!-- AVATAR SECTION -->
 
+    <section class="avatar-card" id="avatarCard">
 
-        <div
-                id="statusPill"
-                class="status-pill">
-
+        <div id="statusPill" class="status-pill">
             Ready to start
-
         </div>
-
 
         <div id="avatarVideo">
 
@@ -495,142 +623,75 @@
                 <div class="icon"></div>
 
                 <strong>
-                    AI Assistant
+                    Aniket's AI Assistant
                 </strong>
 
                 <span>
-                    Start a session to begin
+                    Ask me anything about Aniket
                 </span>
 
             </div>
 
         </div>
 
-
-        <!-- Remote avatar audio lives here -->
+        <!-- Remote avatar audio -->
         <div id="audioTracks"></div>
-
 
     </section>
 
+
+    <!-- CONTROLS -->
 
     <section class="controls">
 
-
-        <button
-                id="startButton"
-                class="primary">
-
+        <button id="startButton" class="primary">
+            <span class="button-icon">✦</span>
             Start Conversation
-
         </button>
 
-
-        <button
-                id="micButton"
-                class="secondary"
-                disabled>
-
+        <button id="micButton" class="secondary" disabled>
+            <span class="button-icon">🎙</span>
             Mute Microphone
-
         </button>
 
 
-        <button
-                id="audioButton"
-                class="secondary"
-                hidden>
 
-            Enable Audio
-
-        </button>
-
-
-        <button
-                id="endButton"
-                class="danger"
-                disabled>
-
+        <button id="endButton" class="danger" disabled>
+            <span class="button-icon">■</span>
             End Session
-
         </button>
 
-
     </section>
 
 
-    <section class="architecture">
-
-        <div class="architecture-title">
-            What is happening behind the screen?
-        </div>
-
-
-
-<div class="pipeline">
-
-    <div class="node">
-        🎤 You
+    <div class="info-line">
+        Your private space to discover Aniket's journey, skills and achievements.
     </div>
-
-    <span class="arrow">→</span>
-
-    <div class="node">
-        LiveKit
-    </div>
-
-    <span class="arrow">→</span>
-
-    <div class="node">
-        Deepgram STT
-    </div>
-
-    <span class="arrow">→</span>
-
-    <div class="node">
-        Node.js LiveKit Agent
-    </div>
-
-    <span class="arrow">→</span>
-
-    <div class="node">
-        Express + Gemini + RAG
-    </div>
-
-    <span class="arrow">→</span>
-
-    <div class="node">
-        Cartesia TTS
-    </div>
-
-    <span class="arrow">→</span>
-
-    <div class="node">
-        Synthesia
-    </div>
-
-    <span class="arrow">→</span>
-
-    <div class="node">
-        👩 AI Assistant
-    </div>
-
-</div>
-
-<p class="hint">
-    LiveKit handles real-time voice communication,
-    Deepgram converts speech into text,
-    the Node.js Agent manages the conversation,
-    Express + Gemini + RAG powers the AI responses,
-    Cartesia generates speech, and Synthesia renders
-    the speaking avatar.
-</p>
-
-
-    </section>
-
 
 </main>
+
+
+<!-- FOOTER -->
+
+<footer>
+
+    <div class="footer-title">
+        Know More About Aniket.
+    </div>
+
+    <div class="footer-description">
+        Explore Aniket's education, technical skills, projects,
+        achievements, experience and career journey through
+        an intelligent personal AI assistant.
+    </div>
+
+    <div class="footer-bottom">
+        Personal AI Assistant ·
+        <span>Aniket Kumar Gupta</span>
+        · © 2026
+    </div>
+
+</footer>
 
 
 <script>
@@ -648,7 +709,6 @@
     } = LivekitClient;
 
 
-
     /*
      * ================================================================
      * STATE
@@ -659,21 +719,9 @@
 
     let microphoneEnabled = true;
 
-    /*
-     * We don't assume Synthesia always uses a specific
-     * participant name.
-     *
-     * Whichever REMOTE participant gives us the first
-     * video track becomes our avatar participant.
-     */
     let avatarParticipantIdentity = null;
 
-    /*
-     * Audio can theoretically arrive before video,
-     * so temporarily store it.
-     */
     let pendingAudioTracks = [];
-
 
 
     /*
@@ -683,50 +731,34 @@
      */
 
     const startButton =
-        document.getElementById(
-            "startButton"
-        );
+        document.getElementById("startButton");
 
     const micButton =
-        document.getElementById(
-            "micButton"
-        );
+        document.getElementById("micButton");
 
     const endButton =
-        document.getElementById(
-            "endButton"
-        );
+        document.getElementById("endButton");
 
     const audioButton =
-        document.getElementById(
-            "audioButton"
-        );
+        document.getElementById("audioButton");
 
     const avatarVideo =
-        document.getElementById(
-            "avatarVideo"
-        );
+        document.getElementById("avatarVideo");
+
+    const avatarCard =
+        document.getElementById("avatarCard");
 
     const audioTracks =
-        document.getElementById(
-            "audioTracks"
-        );
+        document.getElementById("audioTracks");
 
     const connectionDot =
-        document.getElementById(
-            "connectionDot"
-        );
+        document.getElementById("connectionDot");
 
     const connectionText =
-        document.getElementById(
-            "connectionText"
-        );
+        document.getElementById("connectionText");
 
     const statusPill =
-        document.getElementById(
-            "statusPill"
-        );
-
+        document.getElementById("statusPill");
 
 
     /*
@@ -747,29 +779,12 @@
 
             startButton.disabled = true;
 
-
-            setStatus(
-                "Creating session..."
-            );
-
-
-            /*
-             * New room for every conversation.
-             *
-             * Because the Python worker uses automatic
-             * dispatch, a new room causes our agent
-             * to receive a LiveKit job.
-             */
+            setStatus("Creating session...");
 
             const roomName =
                 "avatar-" +
                 crypto.randomUUID();
 
-
-
-            /*
-             * Get LiveKit token from the Node.js backend.
-             */
 
             const response =
                 await fetch(
@@ -778,8 +793,7 @@
                         method: "POST",
 
                         headers: {
-                            "Content-Type":
-                                "application/json"
+                            "Content-Type": "application/json"
                         },
 
                         body: JSON.stringify({
@@ -802,45 +816,16 @@
                 await response.json();
 
 
-
-            /*
-             * IMPORTANT:
-             *
-             * adaptiveStream is FALSE.
-             *
-             * We don't want LiveKit aggressively
-             * lowering the avatar video resolution.
-             */
-
             room = new Room({
-
                 adaptiveStream: false
-
             });
 
-
-
-            /*
-             * Register listeners BEFORE connecting
-             * so we don't miss track events.
-             */
 
             registerRoomEvents();
 
 
+            setStatus("Connecting to LiveKit...");
 
-            setStatus(
-                "Connecting to LiveKit..."
-            );
-
-
-
-            /*
-             * Join LiveKit.
-             *
-             * Explicitly enable autoSubscribe so
-             * remote Synthesia tracks are received.
-             */
 
             await room.connect(
                 credentials.serverUrl,
@@ -853,30 +838,15 @@
 
             setConnected(true);
 
+            setStatus("Waiting for AI assistant...");
 
-            setStatus(
-                "Waiting for AI assistant..."
-            );
-
-
-
-            /*
-             * Enable and publish user's microphone.
-             */
 
             await room.localParticipant
-                .setMicrophoneEnabled(
-                    true
-                );
+                .setMicrophoneEnabled(true);
 
 
             microphoneEnabled = true;
 
-
-
-            /*
-             * Browser autoplay handling.
-             */
 
             try {
 
@@ -904,20 +874,15 @@
             );
 
 
-            setStatus(
-                "Connection failed"
-            );
-
+            setStatus("Connection failed");
 
             setConnected(false);
-
 
             startButton.disabled = false;
 
         }
 
     }
-
 
 
     /*
@@ -929,12 +894,6 @@
     function registerRoomEvents() {
 
 
-        /*
-         * ------------------------------------------------------------
-         * PARTICIPANT JOINED
-         * ------------------------------------------------------------
-         */
-
         room.on(
             RoomEvent.ParticipantConnected,
             participant => {
@@ -944,14 +903,6 @@
                     participant.identity
                 );
 
-
-                /*
-                 * We don't yet know whether this participant
-                 * is Python or Synthesia.
-                 *
-                 * We only decide once a VIDEO arrives.
-                 */
-
                 setStatus(
                     "AI assistant connecting..."
                 );
@@ -959,13 +910,6 @@
             }
         );
 
-
-
-        /*
-         * ------------------------------------------------------------
-         * REMOTE TRACK RECEIVED
-         * ------------------------------------------------------------
-         */
 
         room.on(
             RoomEvent.TrackSubscribed,
@@ -975,39 +919,23 @@
                 participant
             ) => {
 
-
                 console.log(
                     "REMOTE TRACK:",
                     {
-                        participant:
-                        participant.identity,
-
-                        kind:
-                        track.kind,
-
-                        source:
-                        publication.source
+                        participant: participant.identity,
+                        kind: track.kind,
+                        source: publication.source
                     }
                 );
 
 
-
                 /*
-                 * =================================================
-                 * VIDEO
-                 * =================================================
-                 *
-                 * Python agent does not publish video.
-                 *
-                 * Therefore the first remote video should
-                 * be our Synthesia avatar.
+                 * AVATAR VIDEO
                  */
 
                 if (
-                    track.kind ===
-                    Track.Kind.Video
+                    track.kind === Track.Kind.Video
                 ) {
-
 
                     console.log(
                         "AVATAR VIDEO RECEIVED FROM:",
@@ -1019,30 +947,14 @@
                         participant.identity;
 
 
-
-                    /*
-                     * Remove placeholder / old video.
-                     */
-
                     avatarVideo.innerHTML = "";
 
 
-
-                    /*
-                     * LiveKit creates the <video> element.
-                     */
-
-                    const video =
-                        track.attach();
-
+                    const video = track.attach();
 
                     video.autoplay = true;
 
                     video.playsInline = true;
-
-                    /*
-                     * Don't crop the avatar.
-                     */
 
                     video.style.width = "100%";
 
@@ -1052,91 +964,56 @@
 
                     video.style.objectPosition = "center";
 
-                    video.style.background = "#08090c";
+                    video.style.background = "#080808";
 
 
+                    avatarVideo.appendChild(video);
 
-                    avatarVideo.appendChild(
-                        video
-                    );
+                    avatarCard.classList.add("is-active");
 
-
-
-                    /*
-                     * If audio arrived before video,
-                     * attach the audio belonging to this
-                     * same participant now.
-                     */
 
                     attachPendingAvatarAudio();
 
 
-
-                    setStatus(
-                        "Listening..."
-                    );
-
+                    setStatus("Listening...");
 
                     return;
 
                 }
 
 
-
                 /*
-                 * =================================================
-                 * AUDIO
-                 * =================================================
+                 * AVATAR AUDIO
                  */
 
                 if (
-                    track.kind ===
-                    Track.Kind.Audio
+                    track.kind === Track.Kind.Audio
                 ) {
 
-
-                    /*
-                     * If we've already detected which
-                     * participant owns the avatar,
-                     * only attach audio from that participant.
-                     */
-
                     if (
-                        avatarParticipantIdentity
-                        !== null
+                        avatarParticipantIdentity !== null
                     ) {
-
 
                         if (
                             participant.identity ===
                             avatarParticipantIdentity
                         ) {
 
-                            attachAudioTrack(
-                                track
-                            );
+                            attachAudioTrack(track);
 
                         }
-
 
                         return;
 
                     }
 
 
-
-                    /*
-                     * Video hasn't arrived yet.
-                     *
-                     * Temporarily hold remote audio.
-                     */
-
                     pendingAudioTracks.push({
 
                         track: track,
 
                         participantIdentity:
-                        participant.identity
+                            participant.identity
 
                     });
 
@@ -1146,11 +1023,8 @@
         );
 
 
-
         /*
-         * ------------------------------------------------------------
          * TRACK REMOVED
-         * ------------------------------------------------------------
          */
 
         room.on(
@@ -1161,7 +1035,6 @@
                 participant
             ) => {
 
-
                 console.log(
                     "TRACK UNSUBSCRIBED:",
                     participant.identity,
@@ -1170,27 +1043,21 @@
 
 
                 track.detach()
-                    .forEach(
-                        element => {
-                            element.remove();
-                        }
-                    );
+                    .forEach(element => {
+                        element.remove();
+                    });
 
             }
         );
 
 
-
         /*
-         * ------------------------------------------------------------
          * PARTICIPANT LEFT
-         * ------------------------------------------------------------
          */
 
         room.on(
             RoomEvent.ParticipantDisconnected,
             participant => {
-
 
                 console.log(
                     "PARTICIPANT LEFT:",
@@ -1203,9 +1070,7 @@
                     avatarParticipantIdentity
                 ) {
 
-                    avatarParticipantIdentity =
-                        null;
-
+                    avatarParticipantIdentity = null;
 
                     setStatus(
                         "AI assistant disconnected"
@@ -1217,21 +1082,16 @@
         );
 
 
-
         /*
-         * ------------------------------------------------------------
-         * WHO IS SPEAKING?
-         * ------------------------------------------------------------
+         * ACTIVE SPEAKERS
          */
 
         room.on(
             RoomEvent.ActiveSpeakersChanged,
             speakers => {
 
-
                 if (
-                    avatarParticipantIdentity ===
-                    null
+                    avatarParticipantIdentity === null
                 ) {
 
                     return;
@@ -1253,9 +1113,7 @@
                         "AI Assistant is speaking..."
                     );
 
-                } else if (
-                    room
-                ) {
+                } else if (room) {
 
                     setStatus(
                         microphoneEnabled
@@ -1269,29 +1127,21 @@
         );
 
 
-
         /*
-         * ------------------------------------------------------------
-         * AUDIO AUTOPLAY
-         * ------------------------------------------------------------
+         * AUDIO PLAYBACK
          */
 
         room.on(
             RoomEvent.AudioPlaybackStatusChanged,
             () => {
 
+                if (!room.canPlaybackAudio) {
 
-                if (
-                    !room.canPlaybackAudio
-                ) {
-
-                    audioButton.hidden =
-                        false;
+                    audioButton.hidden = false;
 
                 } else {
 
-                    audioButton.hidden =
-                        true;
+                    audioButton.hidden = true;
 
                 }
 
@@ -1299,30 +1149,23 @@
         );
 
 
-
         /*
-         * ------------------------------------------------------------
          * RECONNECTING
-         * ------------------------------------------------------------
          */
 
         room.on(
             RoomEvent.Reconnecting,
             () => {
 
-                setStatus(
-                    "Reconnecting..."
-                );
+                setStatus("Reconnecting...");
 
             }
         );
 
 
-
         room.on(
             RoomEvent.Reconnected,
             () => {
-
 
                 setStatus(
                     avatarParticipantIdentity
@@ -1334,22 +1177,15 @@
         );
 
 
-
         /*
-         * ------------------------------------------------------------
          * DISCONNECTED
-         * ------------------------------------------------------------
          */
 
         room.on(
             RoomEvent.Disconnected,
             () => {
 
-
-                console.log(
-                    "ROOM DISCONNECTED"
-                );
-
+                console.log("ROOM DISCONNECTED");
 
                 resetUI();
 
@@ -1357,7 +1193,6 @@
         );
 
     }
-
 
 
     /*
@@ -1368,40 +1203,21 @@
 
     function attachAudioTrack(track) {
 
+        console.log("ATTACHING AVATAR AUDIO");
 
-        console.log(
-            "ATTACHING AVATAR AUDIO"
-        );
-
-
-        const audio =
-            track.attach();
-
+        const audio = track.attach();
 
         audio.autoplay = true;
 
-
-        audioTracks.appendChild(
-            audio
-        );
+        audioTracks.appendChild(audio);
 
     }
 
 
-
-    /*
-     * Audio may arrive before the video.
-     *
-     * Once we know who the avatar participant is,
-     * attach the matching pending audio.
-     */
-
     function attachPendingAvatarAudio() {
 
-
         if (
-            avatarParticipantIdentity ===
-            null
+            avatarParticipantIdentity === null
         ) {
 
             return;
@@ -1410,19 +1226,15 @@
 
 
         for (
-            const pending
-            of pendingAudioTracks
-            ) {
-
+            const pending of pendingAudioTracks
+        ) {
 
             if (
                 pending.participantIdentity ===
                 avatarParticipantIdentity
             ) {
 
-                attachAudioTrack(
-                    pending.track
-                );
+                attachAudioTrack(pending.track);
 
             }
 
@@ -1432,7 +1244,6 @@
         pendingAudioTracks = [];
 
     }
-
 
 
     /*
@@ -1445,14 +1256,12 @@
         "click",
         async () => {
 
-
             if (!room) {
                 return;
             }
 
 
-            microphoneEnabled =
-                !microphoneEnabled;
+            microphoneEnabled = !microphoneEnabled;
 
 
             await room.localParticipant
@@ -1461,10 +1270,10 @@
                 );
 
 
-            micButton.textContent =
+            micButton.innerHTML =
                 microphoneEnabled
-                    ? "Mute Microphone"
-                    : "Unmute Microphone";
+                    ? '<span class="button-icon">🎙</span> Mute Microphone'
+                    : '<span class="button-icon">🔇</span> Unmute Microphone';
 
 
             setStatus(
@@ -1477,7 +1286,6 @@
     );
 
 
-
     /*
      * ================================================================
      * ENABLE AUDIO
@@ -1488,7 +1296,6 @@
         "click",
         async () => {
 
-
             if (!room) {
                 return;
             }
@@ -1498,13 +1305,9 @@
 
                 await room.startAudio();
 
-
-                audioButton.hidden =
-                    true;
-
+                audioButton.hidden = true;
 
             } catch (error) {
-
 
                 console.error(
                     "Could not start audio:",
@@ -1517,7 +1320,6 @@
     );
 
 
-
     /*
      * ================================================================
      * END SESSION
@@ -1528,9 +1330,7 @@
         "click",
         async () => {
 
-
             if (room) {
-
 
                 try {
 
@@ -1545,7 +1345,6 @@
 
                 }
 
-
                 room = null;
 
             }
@@ -1557,7 +1356,6 @@
     );
 
 
-
     /*
      * ================================================================
      * HELPERS
@@ -1566,62 +1364,40 @@
 
     function setStatus(message) {
 
-        statusPill.textContent =
-            message;
+        statusPill.textContent = message;
 
     }
 
 
-
     function setConnected(connected) {
-
 
         if (connected) {
 
+            connectionDot.classList.add("connected");
 
-            connectionDot.classList.add(
-                "connected"
-            );
-
-
-            connectionText.textContent =
-                "Connected";
-
+            connectionText.textContent = "Connected";
 
         } else {
 
+            connectionDot.classList.remove("connected");
 
-            connectionDot.classList.remove(
-                "connected"
-            );
-
-
-            connectionText.textContent =
-                "Disconnected";
+            connectionText.textContent = "Disconnected";
 
         }
 
     }
 
 
-
     function resetUI() {
-
 
         setConnected(false);
 
-
-        setStatus(
-            "Ready to start"
-        );
+        setStatus("Ready to start");
 
 
-        avatarParticipantIdentity =
-            null;
+        avatarParticipantIdentity = null;
 
-
-        pendingAudioTracks =
-            [];
+        pendingAudioTracks = [];
 
 
         avatarVideo.innerHTML = `
@@ -1631,53 +1407,42 @@
                 <div class="icon"></div>
 
                 <strong>
-                    AI Assistant
+                    Aniket's AI Assistant
                 </strong>
 
                 <span>
-                    Start a session to begin
+                    Ask me anything about Aniket
                 </span>
 
             </div>
+
         `;
 
 
-        /*
-         * Remove attached remote audio.
-         */
-
-        audioTracks.innerHTML =
-            "";
+        avatarCard.classList.remove("is-active");
 
 
-        microphoneEnabled =
-            true;
+        audioTracks.innerHTML = "";
 
 
-        micButton.textContent =
-            "Mute Microphone";
+        microphoneEnabled = true;
 
 
-        startButton.disabled =
-            false;
+        micButton.innerHTML =
+            '<span class="button-icon">🎙</span> Mute Microphone';
 
 
-        micButton.disabled =
-            true;
+        startButton.disabled = false;
 
+        micButton.disabled = true;
 
-        endButton.disabled =
-            true;
+        endButton.disabled = true;
 
-
-        audioButton.hidden =
-            true;
+        audioButton.hidden = true;
 
     }
 
 </script>
 
-
 </body>
-
 </html>
