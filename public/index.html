@@ -38,8 +38,6 @@
             overflow-x: hidden;
         }
 
-        /* HEADER */
-
         header {
             min-height: 76px;
             padding: 0 clamp(18px, 5vw, 75px);
@@ -101,15 +99,11 @@
             box-shadow: 0 0 10px rgba(34,197,94,.5);
         }
 
-        /* MAIN */
-
         main {
             width: min(1160px, calc(100% - 40px));
             margin: auto;
             padding: 58px 0 55px;
         }
-
-        /* HERO */
 
         .hero {
             text-align: center;
@@ -383,8 +377,6 @@
             pointer-events: none;
         }
 
-        /* TABLET */
-
         @media (max-width: 768px) {
             main {
                 padding-top: 45px;
@@ -402,8 +394,6 @@
                 padding: 0 17px;
             }
         }
-
-        /* MOBILE */
 
         @media (max-width: 520px) {
             header {
@@ -520,10 +510,8 @@
 <body>
 
 <header>
-
     <div class="brand">
         <div class="logo">AA</div>
-
         <div>
             Aniket's AI Assistant
             <small>PERSONAL AI EXPERIENCE</small>
@@ -534,14 +522,11 @@
         <div id="connectionDot" class="connection-dot"></div>
         <span id="connectionText">Disconnected</span>
     </div>
-
 </header>
-
 
 <main>
 
     <section class="hero">
-
         <div class="eyebrow">
             <span class="eyebrow-dot"></span>
             PERSONAL AI ASSISTANT
@@ -558,11 +543,7 @@
             Ask anything about Aniket and get instant,
             personalized answers.
         </p>
-
     </section>
-
-
-    <!-- AVATAR -->
 
     <section class="avatar-card" id="avatarCard">
 
@@ -571,25 +552,16 @@
         </div>
 
         <div id="avatarVideo">
-
             <div class="avatar-placeholder">
-
                 <div class="icon"></div>
-
                 <strong>Aniket's AI Assistant</strong>
-
                 <span>Ask me anything about Aniket</span>
-
             </div>
-
         </div>
 
         <div id="audioTracks"></div>
 
     </section>
-
-
-    <!-- CONTROLS -->
 
     <section class="controls">
 
@@ -603,7 +575,6 @@
             Mute Microphone
         </button>
 
-
         <button id="endButton" class="danger" disabled>
             <span class="button-icon">■</span>
             End Session
@@ -616,7 +587,6 @@
     </div>
 
 </main>
-
 
 <footer>
 
@@ -642,9 +612,9 @@
 <script>
 
     /*
-     * ================================================================
+     * =========================================================
      * LIVEKIT
-     * ================================================================
+     * =========================================================
      */
 
     const {
@@ -655,63 +625,41 @@
 
 
     /*
-     * ================================================================
+     * =========================================================
      * STATE
-     * ================================================================
+     * =========================================================
      */
 
     let room = null;
-
     let microphoneEnabled = true;
-
     let avatarParticipantIdentity = null;
-
     let pendingAudioTracks = [];
-
     let isEndingSession = false;
 
 
     /*
-     * ================================================================
+     * =========================================================
      * DOM
-     * ================================================================
+     * =========================================================
      */
 
-    const startButton =
-        document.getElementById("startButton");
+    const startButton = document.getElementById("startButton");
+    const micButton = document.getElementById("micButton");
+    const endButton = document.getElementById("endButton");
 
-    const micButton =
-        document.getElementById("micButton");
+    const avatarVideo = document.getElementById("avatarVideo");
+    const avatarCard = document.getElementById("avatarCard");
+    const audioTracks = document.getElementById("audioTracks");
 
-    const endButton =
-        document.getElementById("endButton");
-
-    const audioButton =
-        document.getElementById("audioButton");
-
-    const avatarVideo =
-        document.getElementById("avatarVideo");
-
-    const avatarCard =
-        document.getElementById("avatarCard");
-
-    const audioTracks =
-        document.getElementById("audioTracks");
-
-    const connectionDot =
-        document.getElementById("connectionDot");
-
-    const connectionText =
-        document.getElementById("connectionText");
-
-    const statusPill =
-        document.getElementById("statusPill");
+    const connectionDot = document.getElementById("connectionDot");
+    const connectionText = document.getElementById("connectionText");
+    const statusPill = document.getElementById("statusPill");
 
 
     /*
-     * ================================================================
-     * START CONVERSATION
-     * ================================================================
+     * =========================================================
+     * START SESSION
+     * =========================================================
      */
 
     startButton.addEventListener("click", startSession);
@@ -719,47 +667,34 @@
 
     async function startSession() {
 
-        if (room || isEndingSession) {
-            return;
-        }
+        if (room || isEndingSession) return;
+
+        let newRoom = null;
 
         try {
 
             startButton.disabled = true;
-
             setStatus("Creating session...");
 
-            const roomName =
-                "avatar-" + crypto.randomUUID();
+            const roomName = "avatar-" + crypto.randomUUID();
 
-
-            const response = await fetch(
-                "/api/livekit/token",
-                {
-                    method: "POST",
-
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-
-                    body: JSON.stringify({
-                        roomName: roomName
-                    })
-                }
-            );
-
+            const response = await fetch("/api/livekit/token", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    roomName: roomName
+                })
+            });
 
             if (!response.ok) {
-                throw new Error(
-                    "Could not generate LiveKit token"
-                );
+                throw new Error("Could not generate LiveKit token");
             }
-
 
             const credentials = await response.json();
 
-
-            const newRoom = new Room({
+            newRoom = new Room({
                 adaptiveStream: false
             });
 
@@ -767,9 +702,7 @@
 
             registerRoomEvents(newRoom);
 
-
             setStatus("Connecting to LiveKit...");
-
 
             await newRoom.connect(
                 credentials.serverUrl,
@@ -779,73 +712,46 @@
                 }
             );
 
-
-            // Ignore stale connection if session was ended
-            if (room !== newRoom) {
-                return;
-            }
-
+            if (room !== newRoom) return;
 
             setConnected(true);
-
             setStatus("Waiting for AI assistant...");
 
+            await newRoom.localParticipant.setMicrophoneEnabled(true);
 
-            await newRoom.localParticipant
-                .setMicrophoneEnabled(true);
-
-
-            if (room !== newRoom) {
-                return;
-            }
-
+            if (room !== newRoom) return;
 
             microphoneEnabled = true;
 
-
             try {
-
                 await newRoom.startAudio();
-
             } catch (error) {
-
-                console.log(
-                    "Browser requires user interaction for audio."
-                );
-
+                console.log("Audio playback requires user interaction.", error);
             }
 
+            if (room !== newRoom) return;
 
             micButton.disabled = false;
-
             endButton.disabled = false;
-
 
         } catch (error) {
 
             console.error("START SESSION ERROR:", error);
 
+            if (newRoom) {
 
-            // Clean up a partially created room
-            if (room) {
-
-                const failedRoom = room;
-                room = null;
-
-                try {
-                    await failedRoom.disconnect(true);
-                } catch (disconnectError) {
-                    console.error(
-                        "Connection cleanup error:",
-                        disconnectError
-                    );
+                if (room === newRoom) {
+                    room = null;
                 }
 
+                try {
+                    await newRoom.disconnect(true);
+                } catch (disconnectError) {
+                    console.error("Connection cleanup error:", disconnectError);
+                }
             }
 
-
             resetUI();
-
             setStatus("Connection failed");
 
         }
@@ -854,22 +760,20 @@
 
 
     /*
-     * ================================================================
+     * =========================================================
      * ROOM EVENTS
-     * ================================================================
+     * =========================================================
      */
 
     function registerRoomEvents(currentRoom) {
-
 
         currentRoom.on(
             RoomEvent.ParticipantConnected,
             participant => {
 
-                console.log(
-                    "PARTICIPANT JOINED:",
-                    participant.identity
-                );
+                if (room !== currentRoom || isEndingSession) return;
+
+                console.log("PARTICIPANT JOINED:", participant.identity);
 
                 setStatus("AI assistant connecting...");
 
@@ -878,78 +782,49 @@
 
 
         /*
-         * REMOTE TRACK RECEIVED
+         * TRACK SUBSCRIBED
          */
 
         currentRoom.on(
             RoomEvent.TrackSubscribed,
-            (
-                track,
-                publication,
-                participant
-            ) => {
+            (track, publication, participant) => {
 
-                if (room !== currentRoom || isEndingSession) {
-                    return;
-                }
+                if (room !== currentRoom || isEndingSession) return;
 
-                console.log(
-                    "REMOTE TRACK:",
-                    {
-                        participant: participant.identity,
-                        kind: track.kind,
-                        source: publication.source
-                    }
-                );
+                console.log("REMOTE TRACK:", {
+                    participant: participant.identity,
+                    kind: track.kind,
+                    source: publication.source
+                });
 
 
                 // AVATAR VIDEO
 
                 if (track.kind === Track.Kind.Video) {
 
-                    console.log(
-                        "AVATAR VIDEO RECEIVED FROM:",
-                        participant.identity
-                    );
+                    avatarParticipantIdentity = participant.identity;
 
-
-                    avatarParticipantIdentity =
-                        participant.identity;
-
-
-                    // Remove previous avatar elements
                     avatarVideo.innerHTML = "";
-
 
                     const video = track.attach();
 
                     video.autoplay = true;
-
                     video.playsInline = true;
-
                     video.style.width = "100%";
-
                     video.style.height = "100%";
-
                     video.style.objectFit = "contain";
-
                     video.style.objectPosition = "center";
-
                     video.style.background = "#080808";
-
 
                     avatarVideo.appendChild(video);
 
                     avatarCard.classList.add("is-active");
 
-
                     attachPendingAvatarAudio();
-
 
                     setStatus("Listening...");
 
                     return;
-
                 }
 
 
@@ -959,27 +834,16 @@
 
                     if (avatarParticipantIdentity !== null) {
 
-                        if (
-                            participant.identity ===
-                            avatarParticipantIdentity
-                        ) {
-
+                        if (participant.identity === avatarParticipantIdentity) {
                             attachAudioTrack(track);
-
                         }
 
                         return;
-
                     }
 
-
                     pendingAudioTracks.push({
-
                         track: track,
-
-                        participantIdentity:
-                            participant.identity
-
+                        participantIdentity: participant.identity
                     });
 
                 }
@@ -989,55 +853,36 @@
 
 
         /*
-         * TRACK REMOVED
+         * TRACK UNSUBSCRIBED
          */
 
         currentRoom.on(
             RoomEvent.TrackUnsubscribed,
-            (
-                track,
-                publication,
-                participant
-            ) => {
+            (track, publication, participant) => {
 
-                console.log(
-                    "TRACK UNSUBSCRIBED:",
-                    participant.identity,
-                    track.kind
-                );
+                console.log("TRACK UNSUBSCRIBED:", participant.identity, track.kind);
 
-                track.detach().forEach(element => {
-                    element.remove();
-                });
+                track.detach().forEach(element => element.remove());
 
             }
         );
 
 
         /*
-         * PARTICIPANT LEFT
+         * PARTICIPANT DISCONNECTED
          */
 
         currentRoom.on(
             RoomEvent.ParticipantDisconnected,
             participant => {
 
-                console.log(
-                    "PARTICIPANT LEFT:",
-                    participant.identity
-                );
+                console.log("PARTICIPANT LEFT:", participant.identity);
 
-
-                if (
-                    participant.identity ===
-                    avatarParticipantIdentity
-                ) {
+                if (participant.identity === avatarParticipantIdentity) {
 
                     avatarParticipantIdentity = null;
 
-                    setStatus(
-                        "AI assistant disconnected"
-                    );
+                    setStatus("AI assistant disconnected");
 
                 }
 
@@ -1055,25 +900,17 @@
 
                 if (
                     room !== currentRoom ||
+                    isEndingSession ||
                     avatarParticipantIdentity === null
-                ) {
-                    return;
-                }
+                ) return;
 
-
-                const avatarSpeaking =
-                    speakers.some(
-                        participant =>
-                            participant.identity ===
-                            avatarParticipantIdentity
-                    );
-
+                const avatarSpeaking = speakers.some(
+                    participant => participant.identity === avatarParticipantIdentity
+                );
 
                 if (avatarSpeaking) {
 
-                    setStatus(
-                        "AI Assistant is speaking..."
-                    );
+                    setStatus("AI Assistant is speaking...");
 
                 } else {
 
@@ -1084,25 +921,6 @@
                     );
 
                 }
-
-            }
-        );
-
-
-        /*
-         * AUDIO PLAYBACK
-         */
-
-        currentRoom.on(
-            RoomEvent.AudioPlaybackStatusChanged,
-            () => {
-
-                if (room !== currentRoom) {
-                    return;
-                }
-
-                audioButton.hidden =
-                    currentRoom.canPlaybackAudio;
 
             }
         );
@@ -1132,9 +950,7 @@
             RoomEvent.Reconnected,
             () => {
 
-                if (room !== currentRoom) {
-                    return;
-                }
+                if (room !== currentRoom || isEndingSession) return;
 
                 setStatus(
                     avatarParticipantIdentity
@@ -1156,10 +972,9 @@
 
                 console.log("ROOM DISCONNECTED");
 
-                if (room === currentRoom) {
+                if (room === currentRoom && !isEndingSession) {
 
                     room = null;
-
                     resetUI();
 
                 }
@@ -1171,9 +986,9 @@
 
 
     /*
-     * ================================================================
-     * ATTACH AVATAR AUDIO
-     * ================================================================
+     * =========================================================
+     * AVATAR AUDIO
+     * =========================================================
      */
 
     function attachAudioTrack(track) {
@@ -1191,24 +1006,15 @@
 
     function attachPendingAvatarAudio() {
 
-        if (avatarParticipantIdentity === null) {
-            return;
-        }
-
+        if (avatarParticipantIdentity === null) return;
 
         for (const pending of pendingAudioTracks) {
 
-            if (
-                pending.participantIdentity ===
-                avatarParticipantIdentity
-            ) {
-
+            if (pending.participantIdentity === avatarParticipantIdentity) {
                 attachAudioTrack(pending.track);
-
             }
 
         }
-
 
         pendingAudioTracks = [];
 
@@ -1216,221 +1022,142 @@
 
 
     /*
-     * ================================================================
-     * MUTE / UNMUTE MICROPHONE
-     * ================================================================
+     * =========================================================
+     * MUTE / UNMUTE
+     * =========================================================
      */
 
-    micButton.addEventListener(
-        "click",
-        async () => {
+    micButton.addEventListener("click", async () => {
 
-            const currentRoom = room;
+        const currentRoom = room;
 
-            if (!currentRoom || isEndingSession) {
-                return;
-            }
+        if (!currentRoom || isEndingSession) return;
 
+        try {
 
-            try {
+            const nextState = !microphoneEnabled;
 
-                const nextState = !microphoneEnabled;
+            await currentRoom.localParticipant.setMicrophoneEnabled(nextState);
 
-                await currentRoom.localParticipant
-                    .setMicrophoneEnabled(nextState);
+            if (room !== currentRoom || isEndingSession) return;
 
+            microphoneEnabled = nextState;
 
-                if (room !== currentRoom) {
-                    return;
-                }
+            micButton.innerHTML = microphoneEnabled
+                ? '<span class="button-icon">🎙</span> Mute Microphone'
+                : '<span class="button-icon">🔇</span> Unmute Microphone';
 
+            setStatus(
+                microphoneEnabled
+                    ? "Listening..."
+                    : "Microphone muted"
+            );
 
-                microphoneEnabled = nextState;
+        } catch (error) {
 
-
-                micButton.innerHTML =
-                    microphoneEnabled
-                        ? '<span class="button-icon">🎙</span> Mute Microphone'
-                        : '<span class="button-icon">🔇</span> Unmute Microphone';
-
-
-                setStatus(
-                    microphoneEnabled
-                        ? "Listening..."
-                        : "Microphone muted"
-                );
-
-            } catch (error) {
-
-                console.error(
-                    "MICROPHONE ERROR:",
-                    error
-                );
-
-            }
+            console.error("MICROPHONE ERROR:", error);
 
         }
-    );
+
+    });
 
 
     /*
-     * ================================================================
-     * ENABLE AUDIO
-     * ================================================================
+     * =========================================================
+     * END SESSION
+     * =========================================================
      */
 
-    audioButton.addEventListener(
-        "click",
-        async () => {
-
-            const currentRoom = room;
-
-            if (!currentRoom || isEndingSession) {
-                return;
-            }
-
-
-            try {
-
-                await currentRoom.startAudio();
-
-                if (room === currentRoom) {
-                    audioButton.hidden = true;
-                }
-
-            } catch (error) {
-
-                console.error(
-                    "Could not start audio:",
-                    error
-                );
-
-            }
-
-        }
-    );
-
-
-    /*
-     * ================================================================
-     * END SESSION - FIXED
-     * ================================================================
-     */
-
-    endButton.addEventListener(
-        "click",
-        endSession
-    );
+    endButton.addEventListener("click", endSession);
 
 
     async function endSession() {
 
-        // Prevent multiple clicks
-        if (isEndingSession) {
-            return;
-        }
+        if (isEndingSession) return;
 
         isEndingSession = true;
 
         const currentRoom = room;
 
+        console.log("ENDING SESSION...");
 
-        // Update button immediately
+        // Disable controls immediately
+
         endButton.disabled = true;
-
         startButton.disabled = true;
-
         micButton.disabled = true;
-
-        audioButton.hidden = true;
-
 
         setStatus("Ending session...");
 
 
         try {
 
-            console.log("ENDING LIVEKIT SESSION...");
+            /*
+             * Clear the active room reference.
+             * This prevents duplicate cleanup from
+             * the Disconnected event.
+             */
+
+            room = null;
 
 
             if (currentRoom) {
 
                 /*
-                 * Detach all subscribed remote tracks
+                 * Detach all remote video/audio tracks.
                  */
 
-                currentRoom.remoteParticipants.forEach(
-                    participant => {
+                currentRoom.remoteParticipants.forEach(participant => {
 
-                        participant.trackPublications.forEach(
-                            publication => {
+                    participant.trackPublications.forEach(publication => {
 
-                                if (publication.track) {
+                        if (publication.track) {
 
-                                    publication.track
-                                        .detach()
-                                        .forEach(element => {
-                                            element.remove();
-                                        });
-
-                                }
-
-                            }
-                        );
-
-                    }
-                );
-
-
-                /*
-                 * Remove pending audio references
-                 */
-
-                pendingAudioTracks.forEach(
-                    pending => {
-
-                        pending.track.detach()
-                            .forEach(element => {
+                            publication.track.detach().forEach(element => {
                                 element.remove();
                             });
 
-                    }
-                );
+                        }
+
+                    });
+
+                });
 
 
                 /*
-                 * Clear global room reference before
-                 * disconnect to avoid duplicate event cleanup
+                 * Clean pending tracks.
                  */
 
-                room = null;
+                pendingAudioTracks.forEach(pending => {
+
+                    pending.track.detach().forEach(element => {
+                        element.remove();
+                    });
+
+                });
+
+                pendingAudioTracks = [];
 
 
                 /*
-                 * Disconnect and stop local media tracks
+                 * Disconnect LiveKit.
+                 * true requests stopping local media tracks.
                  */
 
                 await currentRoom.disconnect(true);
 
-
-                console.log(
-                    "LIVEKIT DISCONNECTED SUCCESSFULLY"
-                );
+                console.log("LIVEKIT DISCONNECTED SUCCESSFULLY");
 
             }
 
-
         } catch (error) {
 
-            console.error(
-                "SESSION DISCONNECT ERROR:",
-                error
-            );
+            console.error("SESSION DISCONNECT ERROR:", error);
 
         } finally {
 
             /*
-             * Always restore UI, even if disconnect fails
+             * ALWAYS restore the original UI.
              */
 
             room = null;
@@ -1439,9 +1166,7 @@
 
             isEndingSession = false;
 
-            console.log(
-                "SESSION CLEANUP COMPLETED"
-            );
+            console.log("SESSION CLEANUP COMPLETED");
 
         }
 
@@ -1449,41 +1174,31 @@
 
 
     /*
-     * ================================================================
+     * =========================================================
      * HELPERS
-     * ================================================================
+     * =========================================================
      */
 
     function setStatus(message) {
-
         statusPill.textContent = message;
-
     }
 
 
     function setConnected(connected) {
 
-        if (connected) {
+        connectionDot.classList.toggle("connected", connected);
 
-            connectionDot.classList.add("connected");
-
-            connectionText.textContent = "Connected";
-
-        } else {
-
-            connectionDot.classList.remove("connected");
-
-            connectionText.textContent = "Disconnected";
-
-        }
+        connectionText.textContent = connected
+            ? "Connected"
+            : "Disconnected";
 
     }
 
 
     /*
-     * ================================================================
+     * =========================================================
      * RESET UI
-     * ================================================================
+     * =========================================================
      */
 
     function resetUI() {
@@ -1493,13 +1208,15 @@
         setStatus("Ready to start");
 
 
+        // Reset avatar identity
+
         avatarParticipantIdentity = null;
 
         pendingAudioTracks = [];
 
 
         /*
-         * Restore original avatar placeholder
+         * Restore original placeholder.
          */
 
         avatarVideo.innerHTML = `
@@ -1508,51 +1225,40 @@
 
                 <div class="icon"></div>
 
-                <strong>
-                    Aniket's AI Assistant
-                </strong>
+                <strong>Aniket's AI Assistant</strong>
 
-                <span>
-                    Ask me anything about Aniket
-                </span>
+                <span>Ask me anything about Aniket</span>
 
             </div>
 
         `;
 
 
+        // Remove active avatar styling
+
         avatarCard.classList.remove("is-active");
 
 
-        /*
-         * Remove remote audio elements
-         */
+        // Remove all remote audio elements
 
         audioTracks.innerHTML = "";
 
 
-        /*
-         * Reset microphone state
-         */
+        // Reset microphone
 
         microphoneEnabled = true;
-
 
         micButton.innerHTML =
             '<span class="button-icon">🎙</span> Mute Microphone';
 
 
-        /*
-         * Restore button states
-         */
+        // Restore button states
 
         startButton.disabled = false;
 
         micButton.disabled = true;
 
         endButton.disabled = true;
-
-        audioButton.hidden = true;
 
     }
 
