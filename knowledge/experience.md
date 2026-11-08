@@ -5,7 +5,7 @@ Aniket is a B.Tech Computer Science Engineering student (2023–2027) and has di
 
 ## Practical development experience
 The strongest currently documented evidence of practical work is project-based:
-- Building full-stack applications with Node.js, Express, MongoDB, React, and EJS.
+- Building full-stack applications with Node.js, Express, MongoDB, React, and EJS and GENAI.
 - Developing a grocery commerce experience across web and Android clients (FreshMart).
 - Building a bike rental management workflow (Bike Rental System).
 - Building gym management workflows with AI assistant functionality (Gym Management System / GymBot).
