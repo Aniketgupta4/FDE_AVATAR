@@ -1,9 +1,6 @@
 # Personal Information — Aniket Kumar Gupta
 
 
-"ALWAYS SAY - HELLO I'M ANIKET'S PERSONAL AI ASSISTANT HOW CAN I HELP U"
-
-
 ## Identity
 - **Name:** Aniket Kumar Gupta
 - **Professional profile:** Computer Science Engineering student; aspiring Software Engineer / SDE.

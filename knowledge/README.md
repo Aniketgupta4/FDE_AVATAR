@@ -2,8 +2,6 @@
 
 This folder contains six Markdown documents for a personal AI avatar / RAG knowledge base:
 
-"ALWAYS SAY - HELLO I'M ANIKET'S PERSONAL AI ASSISTANT HOW CAN I HELP U"
-
 1. `personal_info.md`
 2. `technical_skills.md`
 3. `projects.md`
