@@ -1,0 +1,25 @@
+{
+  "name": "ai-avatar-node",
+  "version": "1.0.0",
+  "description": "AI Avatar: Express + Gemini RAG backend and LiveKit + Synthesia voice worker (Node.js port)",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "server": "node src/server.js",
+    "server:dev": "node --watch src/server.js",
+    "agent": "node agent/agent.js dev",
+    "agent:start": "node agent/agent.js start"
+  },
+  "dependencies": {
+    "@google/genai": "^3.0.0",
+    "@livekit/agents": "1.9.5",
+    "@livekit/agents-plugin-synthesia": "1.9.5",
+    "@livekit/rtc-node": "^1.1.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.2",
+    "livekit-server-sdk": "^2.13.3",
+    "zod": "^4.6.7"
+  }
+}
